@@ -92,7 +92,10 @@ def _prompt_for_schema(question: str) -> str:
     return f"""
         You are an expert PostgreSQL SQL assistant.
 
-        You have access to a PostgreSQL database with this schema:
+        Rules:
+        - Database is PostgreSQL.
+        - The schema is already provided. Do not use DESCRIBE, SHOW TABLES, or \d commands.
+        - Only generate valid SELECT queries over the following tables:
 
         Table: users
         - id SERIAL PRIMARY KEY
@@ -168,6 +171,12 @@ def _prompt_for_schema(question: str) -> str:
         - Use proper JOINs when referencing multiple tables.
         - Do not include any explanation or commentary.
         - Output **only the SQL** (no backticks).
+
+        Instructions:
+        - Always write **SELECT-only** queries.
+        - Never attempt to inspect the schema using DESCRIBE, SHOW, or \d.
+        - If unsure, return the closest meaningful SELECT instead.
+        - Prefer joining tables when needed, but stick to the schema above.
 
         Question: "{question}"
         """.strip()
