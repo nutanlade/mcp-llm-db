@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DB Query with LLM</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        input[type=text] { width: 300px; padding: 8px; }
+        button { padding: 8px 12px; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 6px; }
+    </style>
+</head>
+<body>
+    <h2>Ask the Database</h2>
+    <form id="query-form">
+        <input type="text" name="question" id="question" placeholder="e.g. Who is the oldest user?" required>
+        <button type="submit">Ask</button>
+    </form>
+
+    <h3>Response:</h3>
+    <pre id="response"></pre>
+
+    <script>
+        document.getElementById("query-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const question = document.getElementById("question").value;
+            const formData = new FormData();
+            formData.append("question", question);
+
+            const res = await fetch("/ask", {
+                method: "POST",
+                body: formData
+            });
+            const data = await res.json();
+            document.getElementById("response").textContent = JSON.stringify(data, null, 2);
+        });
+    </script>
+</body>
+</html>
