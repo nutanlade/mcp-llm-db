@@ -20,6 +20,19 @@ This project demonstrates how to build a **Minimal Chat Protocol (MCP)** server 
 
 ---
 
+## 🚀 Architecture
+
+![Architecture Diagram](mcp-db-llama-architecture.png)
+
+### 🔄 Flow
+1. **User Question** → sent from the HTML UI (`/ask`) to FastAPI.  
+2. **FastAPI + MCP Server** → passes the question to Ollama.  
+3. **Ollama LLM** → generates a SQL `SELECT` query (only read-only).  
+4. **SQL Validator** → ensures query is safe (no `DESCRIBE`, `SHOW`, or modifications).  
+5. **PostgreSQL DB** → executes the safe SQL query and returns results.  
+6. **FastAPI** → formats results into JSON.  
+7. **Response** → returned to the user via the HTML UI. 
+
 ## 🛠️ Prerequisites
 
 * **Python 3.11+**
